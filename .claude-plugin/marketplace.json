@@ -1,0 +1,13 @@
+{
+  "name": "murmur-computing",
+  "owner": {
+    "name": "Murmur Edge Computing Inc."
+  },
+  "description": "Murmur: offload an AI agent's heavy compute to your own devices.",
+  "plugins": [
+    {
+      "name": "murmur-computing",
+      "source": "./"
+    }
+  ]
+}

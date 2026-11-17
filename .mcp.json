@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "murmur": {
+      "command": "sh",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/murmur-mcp.sh"]
+    },
+    "murmur-python": {
+      "command": "sh",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/murmur-mcp.sh", "--python"]
+    }
+  }
+}

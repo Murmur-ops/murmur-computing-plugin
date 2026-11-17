@@ -1,0 +1,25 @@
+{
+  "name": "murmur-computing",
+  "displayName": "Murmur",
+  "version": "0.1.0",
+  "description": "Murmur MCP server: Claude offloads heavy compute (NumPy scripts, Python functions) to your own Macs and Windows PCs and gets a deadline verdict. Setup happens inside Claude.",
+  "author": {
+    "name": "Murmur Edge Computing Inc.",
+    "url": "https://murmurcomputing.ai"
+  },
+  "homepage": "https://murmurcomputing.ai",
+  "repository": "https://github.com/Murmur-ops/murmur-computing-plugin",
+  "license": "MIT",
+  "keywords": [
+    "compute",
+    "numpy",
+    "offload",
+    "own-devices",
+    "deadline",
+    "mcp"
+  ],
+  "documentationUrl": "https://cdn.murmurcomputing.ai/START-HERE.md",
+  "privacyPolicyUrl": "https://murmurcomputing.ai/privacy.html",
+  "termsOfServiceUrl": "https://murmurcomputing.ai/terms.html",
+  "icon": "./.claude-plugin/icon.png"
+}
