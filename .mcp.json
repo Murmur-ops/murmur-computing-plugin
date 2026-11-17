@@ -1,12 +1,18 @@
 {
   "mcpServers": {
     "murmur": {
-      "command": "sh",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/murmur-mcp.sh"]
+      "command": "murmur",
+      "args": ["planner", "mcp"],
+      "env": {
+        "PATH": "${USERPROFILE:-}/.murmur/bin;:${HOME:-}/.murmur/bin:${PATH};${PATH}"
+      }
     },
     "murmur-python": {
-      "command": "sh",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/murmur-mcp.sh", "--python"]
+      "command": "murmur",
+      "args": ["planner", "mcp", "--python"],
+      "env": {
+        "PATH": "${USERPROFILE:-}/.murmur/bin;:${HOME:-}/.murmur/bin:${PATH};${PATH}"
+      }
     }
   }
 }

@@ -35,7 +35,7 @@ No deadline: Murmur takes the fastest route it can price and may keep the job he
 2. Next calls return `MURMUR_STARTING` while Murmur sets up a local server in the background: about 5 minutes and 300 MB, once. Relay `say`, wait about a minute, call again.
 3. `TERMS_DECLINED`: stop.
 
-If the `murmur` tools are missing entirely, the Murmur CLI that hosts them is not on this machine yet. Ask the human: "Murmur's tools need its installer. May I run it? It downloads a signed tool into ~/.murmur." Only on a clear yes, run `curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh` and read the last JSON line (`"ok":true` means done). Then ask the human to reconnect the server (`/mcp` in Claude Code) or start a new session, and continue at step 1.
+If the `murmur` tools are missing entirely, the Murmur CLI that hosts them is not on this machine yet. Ask the human: "Murmur's tools need its installer. May I run it? It downloads a signed tool into ~/.murmur." Only on a clear yes, run `curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh` and read the last JSON line (`"ok":true` means done). On Windows, the installer is downloaded first and never piped into a shell: run `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as the normal user, and follow https://cdn.murmurcomputing.ai/START-HERE.md for setup. Then ask the human to reconnect the server (`/mcp` in Claude Code) or start a new session, and continue at step 1.
 
 ## Adding devices
 
@@ -51,5 +51,3 @@ Every failure is `{ok: false, error: {code, message, hint, retryable}}`. Follow 
 - `LICENSE_*`: stop and relay the hint. No retry fixes it.
 - `BAD_INPUT` or an unsupported-op error: fix the script, then call again.
 - Anything else: show the full error JSON, including `dag_id` and job ids.
-
-On Windows, this plugin's servers do not start yet. Use the fallback in START-HERE.
