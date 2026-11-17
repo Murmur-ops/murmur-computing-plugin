@@ -33,15 +33,16 @@ The MCP servers are hosted by the Murmur command-line tool. If it is not on this
 
 ## Requirements
 
-- macOS on Apple silicon, in Claude Code or in Cowork running on your computer. claude.ai chat loads the skill only; local MCP servers do not run there.
-- Windows: Murmur runs on Windows, but this plugin's launcher does not yet. Use [START-HERE](https://cdn.murmurcomputing.ai/START-HERE.md).
+- macOS on Apple silicon or Windows 10/11 (x64), with Murmur installed in `~/.murmur` by its installer.
+- Claude Code (terminal, IDE or desktop app) or Cowork running on your computer. claude.ai chat loads the skill only; local MCP servers do not run there.
+- Windows install: `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as your normal user. Then follow [START-HERE](https://cdn.murmurcomputing.ai/START-HERE.md) for setup.
 
 ## What this plugin runs, sends and fetches
 
-- **Runs:** `scripts/murmur-mcp.sh`, which starts `~/.murmur/bin/murmur planner mcp` (or `... --python`). It runs nothing else. If Murmur is missing it prints a message and exits.
+- **Runs:** `murmur planner mcp` (or `murmur planner mcp --python`) from `~/.murmur/bin`. It runs nothing else. If Murmur is missing, the server fails to start and Claude asks before installing it.
 - **Downloads:** nothing by itself. Claude runs Murmur's installer only after you say yes. The installer checks an Ed25519-signed release manifest from `cdn.murmurcomputing.ai`. Setup after your Terms answer downloads about 300 MB from the same host.
 - **Sends:** your script text stays on this machine. Input arrays and results travel between your own devices over TLS with your own private CA (DTLS on direct links). They do not pass through Murmur. Murmur's servers receive only licence, device-link and update metadata ([privacy policy](https://murmurcomputing.ai/privacy.html)).
-- **macOS GUI apps and PATH:** Claude Desktop and Cowork do not read your shell profile, so a bare `murmur` is not found there. The launcher calls `~/.murmur/bin/murmur` by absolute path for that reason.
+- **PATH:** Claude Desktop and Cowork on macOS do not read your shell profile, and a Windows terminal opened before the install does not see the new PATH entry. So `.mcp.json` puts `~/.murmur/bin` first on the server's PATH, followed by your own PATH. The value is written once for both systems: on macOS the `;` pieces are unused entries, on Windows the `:` pieces are. Your PATH appears twice so that no entry of it is lost on either system.
 - **Two copies of the tools:** if you already registered Murmur with `claude mcp add`, you will see its tools twice. Remove the manual ones with `claude mcp remove murmur` and `claude mcp remove murmur-python`.
 
 ## Install from PyPI

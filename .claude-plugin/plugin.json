@@ -1,7 +1,7 @@
 {
   "name": "murmur-computing",
   "displayName": "Murmur",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Murmur MCP server: Claude offloads heavy compute (NumPy scripts, Python functions) to your own Macs and Windows PCs and gets a deadline verdict. Setup happens inside Claude.",
   "author": {
     "name": "Murmur Edge Computing Inc.",
