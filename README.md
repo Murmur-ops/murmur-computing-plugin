@@ -44,6 +44,16 @@ The MCP servers are hosted by the Murmur command-line tool. If it is not on this
 - **macOS GUI apps and PATH:** Claude Desktop and Cowork do not read your shell profile, so a bare `murmur` is not found there. The launcher calls `~/.murmur/bin/murmur` by absolute path for that reason.
 - **Two copies of the tools:** if you already registered Murmur with `claude mcp add`, you will see its tools twice. Remove the manual ones with `claude mcp remove murmur` and `claude mcp remove murmur-python`.
 
+## Install from PyPI
+
+Without the plugin, any MCP client that runs stdio servers can use the `murmur-computing` package, pinned to a version:
+
+```bash
+claude mcp add --scope user murmur -- uvx murmur-computing==0.1.0
+```
+
+If Murmur is installed it starts Murmur's MCP server; if not, it asks first and installs only after the human says yes. Source: [`pypi/`](pypi/).
+
 ## Licence
 
 The files in this plugin are MIT licensed. Murmur itself is covered by its [Terms of Service](https://murmurcomputing.ai/terms.html).

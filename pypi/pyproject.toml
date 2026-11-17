@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "murmur-computing"
+version = "0.1.0"
+description = "Murmur MCP server launcher: an AI agent offloads heavy compute to your own Macs and Windows PCs"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Murmur Edge Computing Inc."}]
+requires-python = ">=3.9"
+dependencies = []            # stdlib only: nothing resolves at install time
+keywords = ["mcp", "compute", "numpy", "offload", "deadline"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Homepage = "https://murmurcomputing.ai"
+Documentation = "https://cdn.murmurcomputing.ai/START-HERE.md"
+Source = "https://github.com/Murmur-ops/murmur-computing-plugin"
+
+[project.scripts]
+murmur-computing = "murmur_computing.launcher:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
