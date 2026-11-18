@@ -1,6 +1,6 @@
 # Murmur plugin for Claude
 
-Murmur is an MCP server that lets Claude hand heavy compute to your own devices. Claude passes a NumPy script, or the Python functions to offload, plus a deadline. Murmur runs the work on this Mac and, when it is faster, on your other Macs and Windows PCs. It returns the answer and whether the deadline was met. Free for up to 10 devices.
+Murmur is an MCP server that lets Claude hand heavy compute to your own devices. Claude passes a NumPy script, or the Python functions to offload, plus a deadline. Murmur runs the work on this computer and, when it is faster, on your other Macs and Windows PCs. It returns the answer and whether the deadline was met. Free for up to 10 devices.
 
 This plugin adds Murmur's two MCP servers (`murmur`, `murmur-python`) and one skill that tells Claude when to offload and how to read the results.
 
@@ -12,7 +12,7 @@ This plugin adds Murmur's two MCP servers (`murmur`, `murmur-python`) and one sk
 | `murmur_run_python` | Runs a Python file here and sends the functions you name to your devices |
 | `murmur_run_dag` | Runs a Murmur DAG you built |
 | `murmur_fleet` | Lists your online devices, their measured speed, and the licence state |
-| `murmur_invite` | Makes a one-time line that adds another Mac to your fleet, no account |
+| `murmur_invite` | Makes a one-time line (or, for a Windows PC, a download and a code) that adds another of your computers, no account |
 | `murmur_job_status`, `murmur_job_results` | Look up a job by id |
 
 ## Install
@@ -24,7 +24,7 @@ claude plugin install murmur-computing@murmur-computing
 
 ## Example prompts
 
-Each of these runs on a Mac with Murmur set up (the first one also walks you through setup):
+Each of these runs on a Mac or Windows PC (the first one also walks you through setup):
 
 1. "Estimate pi with a 2,000,000-path Monte Carlo in NumPy on Murmur, deadline 2 minutes." Claude writes the script, calls `murmur_run_script`, and reports the estimate and whether the deadline was met.
 2. "What compute do I have on Murmur?" Claude calls `murmur_fleet` and lists your devices, their measured speed and how many of your 10 free devices are in use.
@@ -35,16 +35,16 @@ Each of these runs on a Mac with Murmur set up (the first one also walks you thr
 
 1. Ask for a heavy job, for example: "Estimate pi with a 2,000,000-path Monte Carlo in NumPy on Murmur, deadline 2 minutes."
 2. Claude shows you Murmur's Terms and asks yes or no. Nothing installs without your yes.
-3. Murmur sets up a local server on this Mac in the background: about 5 minutes and 300 MB, once. Claude tells you when it is ready and runs the job.
-4. To add another Mac, ask Claude "add my other Mac to Murmur". You paste one line on that Mac.
+3. Murmur sets up a local server on this computer in the background: about 5 minutes and 300 MB, once. Claude tells you when it is ready and runs the job.
+4. To add another Mac or a Windows PC, ask Claude "add my other computer to Murmur". On a Mac you paste one line in Terminal; on a Windows PC you download the installer, double-click it and paste a code. No account for up to 10 devices; the 11th needs an account and payment, and Claude asks you first.
 
-The MCP servers are hosted by the Murmur command-line tool. If it is not on this Mac yet, Claude asks before it runs the signed installer (`curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh`), then asks you to reconnect the server with `/mcp`.
+The MCP servers are hosted by the Murmur command-line tool. If it is not on this computer yet, Claude asks before it runs the signed installer (`curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh` on a Mac, `install.ps1` on Windows), then asks you to reconnect the server with `/mcp`.
 
 ## Requirements
 
 - macOS on Apple silicon or Windows 10/11 (x64), with Murmur installed in `~/.murmur` by its installer.
 - Claude Code (terminal, IDE or desktop app) or Cowork running on your computer. Murmur's MCP servers are local, so claude.ai chat on the web and the mobile apps load only the skill; there Claude tells you Murmur needs Claude Code or Cowork on your computer.
-- Windows install: `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as your normal user. Then follow [START-HERE](https://cdn.murmurcomputing.ai/START-HERE.md) for setup.
+- Windows install: `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as your normal user. Claude runs these for you after you say yes; setup then continues inside Claude as on a Mac.
 
 ## What this plugin runs, sends and fetches
 
