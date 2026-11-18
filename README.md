@@ -22,6 +22,15 @@ claude plugin marketplace add Murmur-ops/murmur-computing-plugin
 claude plugin install murmur-computing@murmur-computing
 ```
 
+## Example prompts
+
+Each of these runs on a Mac with Murmur set up (the first one also walks you through setup):
+
+1. "Estimate pi with a 2,000,000-path Monte Carlo in NumPy on Murmur, deadline 2 minutes." Claude writes the script, calls `murmur_run_script`, and reports the estimate and whether the deadline was met.
+2. "What compute do I have on Murmur?" Claude calls `murmur_fleet` and lists your devices, their measured speed and how many of your 10 free devices are in use.
+3. "Multiply two random 2048 x 2048 float32 matrices on Murmur and give me the sum of all entries of the result, deadline 1 minute." Claude calls `murmur_run_script` and reports the sum and the deadline verdict.
+4. "Add my other Mac to Murmur." Claude calls `murmur_invite` and gives you one line to paste in Terminal on that Mac.
+
 ## First run happens inside Claude
 
 1. Ask for a heavy job, for example: "Estimate pi with a 2,000,000-path Monte Carlo in NumPy on Murmur, deadline 2 minutes."
@@ -34,7 +43,7 @@ The MCP servers are hosted by the Murmur command-line tool. If it is not on this
 ## Requirements
 
 - macOS on Apple silicon or Windows 10/11 (x64), with Murmur installed in `~/.murmur` by its installer.
-- Claude Code (terminal, IDE or desktop app) or Cowork running on your computer. claude.ai chat loads the skill only; local MCP servers do not run there.
+- Claude Code (terminal, IDE or desktop app) or Cowork running on your computer. Murmur's MCP servers are local, so claude.ai chat on the web and the mobile apps load only the skill; there Claude tells you Murmur needs Claude Code or Cowork on your computer.
 - Windows install: `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as your normal user. Then follow [START-HERE](https://cdn.murmurcomputing.ai/START-HERE.md) for setup.
 
 ## What this plugin runs, sends and fetches
@@ -54,6 +63,11 @@ claude mcp add --scope user murmur -- uvx murmur-computing==0.1.0
 ```
 
 If Murmur is installed it starts Murmur's MCP server; if not, it asks first and installs only after the human says yes. Source: [`pypi/`](pypi/).
+
+## Support
+
+- Bugs and questions: [GitHub issues](https://github.com/Murmur-ops/murmur-computing-plugin/issues)
+- Email: support@murmuredgecomputing.com
 
 ## Licence
 
