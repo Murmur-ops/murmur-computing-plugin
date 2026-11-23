@@ -1,10 +1,11 @@
 {
   "name": "murmur-computing",
   "displayName": "Murmur",
-  "version": "0.1.1",
-  "description": "Murmur MCP server: Claude offloads heavy compute (NumPy scripts, Python functions) to your own Macs and Windows PCs and gets a deadline verdict. Setup happens inside Claude.",
+  "version": "0.1.4",
+  "description": "Murmur MCP server: Claude runs heavy compute (NumPy scripts, Python functions) on the GPUs and CPUs of your own Macs and Windows PCs (Metal, Vulkan, CUDA) and gets a deadline verdict. Setup happens inside Claude.",
   "author": {
     "name": "Murmur Edge Computing Inc.",
+    "email": "support@murmuredgecomputing.com",
     "url": "https://murmurcomputing.ai"
   },
   "homepage": "https://murmurcomputing.ai",
@@ -16,10 +17,21 @@
     "offload",
     "own-devices",
     "deadline",
-    "mcp"
+    "mcp",
+    "gpu",
+    "metal",
+    "vulkan",
+    "cuda"
   ],
-  "documentationUrl": "https://cdn.murmurcomputing.ai/START-HERE.md",
+  "documentationUrl": "https://github.com/Murmur-ops/murmur-computing-plugin#readme",
+  "supportUrl": "https://github.com/Murmur-ops/murmur-computing-plugin/issues",
   "privacyPolicyUrl": "https://murmurcomputing.ai/privacy.html",
   "termsOfServiceUrl": "https://murmurcomputing.ai/terms.html",
-  "icon": "./.claude-plugin/icon.png"
+  "icon": "./.claude-plugin/icon.png",
+  "network": {
+    "hosts": [
+      "cdn.murmurcomputing.ai",
+      "licenses.murmurcomputing.ai"
+    ]
+  }
 }

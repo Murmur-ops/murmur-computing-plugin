@@ -3,7 +3,7 @@
   "owner": {
     "name": "Murmur Edge Computing Inc."
   },
-  "description": "Murmur: offload an AI agent's heavy compute to your own devices.",
+  "description": "Murmur: offload an AI agent's heavy compute to the GPUs and CPUs of your own Macs and Windows PCs.",
   "plugins": [
     {
       "name": "murmur-computing",

@@ -5,7 +5,7 @@ description: Use when a computation would take more than about a minute on this 
 
 # Offload heavy compute to the user's own devices
 
-Murmur's MCP tools run compute, not chat tokens, on devices the user owns: this Mac and their other Macs and Windows PCs. Every step happens through the tools, including first-time setup and adding devices. Job data goes only to the user's own devices, never to Murmur the company.
+Murmur's MCP tools run compute, not chat tokens, on the GPUs and CPUs of devices the user owns: this computer and their other Macs and Windows PCs (Metal, Vulkan, NVIDIA CUDA). Every step happens through the tools, including first-time setup and adding devices. Job data goes only to the user's own devices, never to Murmur the company.
 
 ## When to use it
 
@@ -25,22 +25,33 @@ Murmur's MCP tools run compute, not chat tokens, on devices the user owns: this 
 
 Script rules for `murmur_run_script`: put any `.npy` files it `np.load()`s next to the script. The answer is the script's last assigned variable. No `print()`, classes, scipy or pandas. Arithmetic is float32.
 
+Random numbers: use `rng = np.random.default_rng(seed)` with `rng.uniform(low, high, size)`, `rng.normal`, `rng.standard_normal`, `rng.exponential`, `rng.lognormal` or `rng.poisson`. `rng.random(...)` is not supported: write `rng.uniform(0.0, 1.0, size)` instead.
+
 Report to the user: `outputs`, `deadline.met`, `deadline.verdict` (meets, at_risk, short, unknown). For `murmur_run_python` also read `offload.<name>.fallbacks`: calls listed there ran on this machine.
 
 No deadline: Murmur takes the fastest route it can price and may keep the job here. That is correct behaviour, not a failure. Pass `placement: "local"` to force this machine.
 
-## First run on a Mac: all inside the tools
+## First run on a Mac or Windows PC: all inside the tools
 
 1. Call the tool you need. The first call returns `TERMS_REQUIRED` with `say`, `terms_url` and `terms_nonce`. Show `say` and the Terms URL to the human and ask yes or no. Call again with `accept_terms` set to THEIR answer and the same `terms_nonce`. Never answer for them.
-2. Next calls return `MURMUR_STARTING` while Murmur sets up a local server in the background: about 5 minutes and 300 MB, once. Relay `say`, wait about a minute, call again.
+2. Next calls return `MURMUR_STARTING` while Murmur sets up a local server in the background: about 5 minutes and 4 to 7 GB, once. Relay `say`, wait about a minute, call again.
 3. `TERMS_DECLINED`: stop.
 
-If the `murmur` tools are missing entirely, the Murmur CLI that hosts them is not on this machine yet. Ask the human: "Murmur's tools need its installer. May I run it? It downloads a signed tool into ~/.murmur." Only on a clear yes, run `curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh` and read the last JSON line (`"ok":true` means done). On Windows, the installer is downloaded first and never piped into a shell: run `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as the normal user, and follow https://cdn.murmurcomputing.ai/START-HERE.md for setup. Then ask the human to reconnect the server (`/mcp` in Claude Code) or start a new session, and continue at step 1.
+No account is needed for up to 10 devices.
+
+If you have no `murmur` tools and no shell (claude.ai chat on the web or a phone), do not try to install anything: tell the human that Murmur's tools run locally and need Claude Code or Cowork on their own Mac or Windows PC, then stop.
+
+If the `murmur` tools are missing entirely, the Murmur CLI that hosts them is not on this machine yet. Ask the human: "Murmur's tools need its installer. May I run it? It downloads a signed tool into ~/.murmur." Only on a clear yes, run `curl -fsSL https://cdn.murmurcomputing.ai/install.sh | sh` and read the last JSON line (`"ok":true` means done). On Windows, the installer is downloaded first and never piped into a shell: run `Invoke-WebRequest -UseBasicParsing https://cdn.murmurcomputing.ai/install.ps1 -OutFile "$env:TEMP\install.ps1"`, then `powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install.ps1"` as the normal user (it refuses an administrator shell). Then ask the human to reconnect the server (`/mcp` in Claude Code) or start a new session, and continue at step 1.
 
 ## Adding devices
 
-- Another Mac: call `murmur_invite` on the Mac that runs the server. Give the human `say` and the line; they paste it once in Terminal on the new Mac (same network). No account. Each line works once and expires in 15 minutes. Then `murmur_fleet` shows the new device.
-- A Windows PC: not yet through the tools. Fallback: https://cdn.murmurcomputing.ai/START-HERE.md, "Add your other devices" (this route asks for a sign-in today).
+Call `murmur_invite` on the device that runs the Murmur server and give the human `say`. No account. The invite expires in 15 minutes, and a new call replaces earlier ones.
+- With `join_url` present nothing is pasted: on the other device (same local network) its AI runs `murmur link join`, which finds this device's join port and joins it as a worker.
+- Only if that device cannot find this one: on a Mac the human pastes `line` once in Terminal; on a Windows PC they download `windows.download`, double-click it and paste `windows.code`. These are for the human to paste; never pass a token as a command-line argument.
+- If the server is a Windows PC, the first invite returns `LAN_APPROVAL_REQUIRED` with a `question` and `choices`. Ask the human, then call again with `lan_answer` set to THEIR choice and the `lan_nonce` it gave. Approving shows a Windows administrator prompt.
+- Then `murmur_fleet` shows the new device.
+
+At 10 devices `murmur_fleet` and `murmur_invite` return `capacity.at_cap: true`. Show the human `capacity.note`: an 11th device needs their email, an account and payment, and is refused until then. Only on their yes call `murmur_fleet` again with `upgrade: true` and show `capacity.upgrade.say`. Never ask for or accept a licence key.
 
 A new device first runs a device test of about 2 minutes. Until `murmur_fleet` shows a `gflops` other than 200.0, jobs may stay here.
 
