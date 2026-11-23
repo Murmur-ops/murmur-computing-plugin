@@ -25,6 +25,8 @@ Murmur's MCP tools run compute, not chat tokens, on the GPUs and CPUs of devices
 
 Script rules for `murmur_run_script`: put any `.npy` files it `np.load()`s next to the script. The answer is the script's last assigned variable. No `print()`, classes, scipy or pandas. Arithmetic is float32.
 
+Random numbers: use `rng = np.random.default_rng(seed)` with `rng.uniform(low, high, size)`, `rng.normal`, `rng.standard_normal`, `rng.exponential`, `rng.lognormal` or `rng.poisson`. `rng.random(...)` is not supported: write `rng.uniform(0.0, 1.0, size)` instead.
+
 Report to the user: `outputs`, `deadline.met`, `deadline.verdict` (meets, at_risk, short, unknown). For `murmur_run_python` also read `offload.<name>.fallbacks`: calls listed there ran on this machine.
 
 No deadline: Murmur takes the fastest route it can price and may keep the job here. That is correct behaviour, not a failure. Pass `placement: "local"` to force this machine.
