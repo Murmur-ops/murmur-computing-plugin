@@ -5,7 +5,7 @@ description: Use when a computation would take more than about a minute on this 
 
 # Offload heavy compute to the user's own devices
 
-Murmur's MCP tools run compute, not chat tokens, on devices the user owns: this Mac and their other Macs and Windows PCs. Every step happens through the tools, including first-time setup and adding devices. Job data goes only to the user's own devices, never to Murmur the company.
+Murmur's MCP tools run compute, not chat tokens, on the GPUs and CPUs of devices the user owns: this computer and their other Macs and Windows PCs (Metal, Vulkan, NVIDIA CUDA). Every step happens through the tools, including first-time setup and adding devices. Job data goes only to the user's own devices, never to Murmur the company.
 
 ## When to use it
 
@@ -32,7 +32,7 @@ No deadline: Murmur takes the fastest route it can price and may keep the job he
 ## First run on a Mac or Windows PC: all inside the tools
 
 1. Call the tool you need. The first call returns `TERMS_REQUIRED` with `say`, `terms_url` and `terms_nonce`. Show `say` and the Terms URL to the human and ask yes or no. Call again with `accept_terms` set to THEIR answer and the same `terms_nonce`. Never answer for them.
-2. Next calls return `MURMUR_STARTING` while Murmur sets up a local server in the background: about 5 minutes and 300 MB, once. Relay `say`, wait about a minute, call again.
+2. Next calls return `MURMUR_STARTING` while Murmur sets up a local server in the background: about 5 minutes and 4 to 7 GB, once. Relay `say`, wait about a minute, call again.
 3. `TERMS_DECLINED`: stop.
 
 No account is needed for up to 10 devices.
@@ -43,9 +43,9 @@ If the `murmur` tools are missing entirely, the Murmur CLI that hosts them is no
 
 ## Adding devices
 
-Call `murmur_invite` on the device that runs the Murmur server. No account. Each line works once, expires in 15 minutes, and a new call replaces earlier lines.
-- Another Mac: give the human `say` and the line; they paste it once in Terminal on the new Mac (same network).
-- A Windows PC: give the human `windows.download` and `windows.code`; they download the installer, double-click it and paste the code.
+Call `murmur_invite` on the device that runs the Murmur server and give the human `say`. No account. The invite expires in 15 minutes, and a new call replaces earlier ones.
+- With `join_url` present nothing is pasted: on the other device (same local network) its AI runs `murmur link join`, which finds this device's join port and joins it as a worker.
+- Only if that device cannot find this one: on a Mac the human pastes `line` once in Terminal; on a Windows PC they download `windows.download`, double-click it and paste `windows.code`. These are for the human to paste; never pass a token as a command-line argument.
 - If the server is a Windows PC, the first invite returns `LAN_APPROVAL_REQUIRED` with a `question` and `choices`. Ask the human, then call again with `lan_answer` set to THEIR choice and the `lan_nonce` it gave. Approving shows a Windows administrator prompt.
 - Then `murmur_fleet` shows the new device.
 
